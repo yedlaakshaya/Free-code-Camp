@@ -1,0 +1,34 @@
+def hanoi_solver(n):
+    rods = [
+        list(range(n, 0, -1)),
+        [],
+        []
+    ]
+
+    result = []
+
+    def record():
+        result.append(
+            f"{rods[0]} {rods[1]} {rods[2]}"
+        )
+
+    def move_disk(source, destination):
+        disk = rods[source].pop()
+        rods[destination].append(disk)
+        record()
+
+    def solve(disks, source, auxiliary, destination):
+        if disks == 1:
+            move_disk(source, destination)
+            return
+
+        solve(disks - 1, source, destination, auxiliary)
+        move_disk(source, destination)
+        solve(disks - 1, auxiliary, source, destination)
+
+    # Starting arrangement
+    record()
+
+    solve(n, 0, 1, 2)
+
+    return "\n".join(result)
